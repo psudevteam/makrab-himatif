@@ -1,17 +1,28 @@
 <script setup lang="ts">
-import { defineProps, defineEmits } from "vue";
-
-const emit = defineEmits(["cancel"]);
+const emit = defineEmits(["cancel", "submit"]);
 
 const closeModal = () => {
   emit("cancel");
 };
 
-const props = defineProps({
-  title: String,
-  cancelText: String,
-  submitText: String,
-  contentText: String,
+const submitModal = () => {
+  emit("submit");
+};
+
+interface props {
+  title?: string;
+  cancelText?: string;
+  submitText?: string;
+  contentText?: string;
+  buttonColor?: string;
+}
+
+const props = withDefaults(defineProps<props>(), {
+  title: "",
+  cancelText: "",
+  submitText: "",
+  contentText: "",
+  buttonColor: "bg-green-400",
 });
 </script>
 <template>
@@ -53,8 +64,10 @@ const props = defineProps({
         </div>
         <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
           <button
-            type="button"
-            class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
+            @click="submitModal"
+            type="submit"
+            :class="buttonColor"
+            class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-300 sm:ml-3 sm:w-auto sm:text-sm"
           >
             {{ submitText }}
           </button>

@@ -18,11 +18,13 @@ const showModal = () => {
 const fullName = ref();
 const phoneNumber = ref();
 const studentId = ref();
-const classYear = ref();
+const classYear = ref(2021);
 const gradeNumber = ref();
 const email = ref();
 
-const addPeserta = () => {};
+const addPeserta = () => {
+  console.log("submited");
+};
 
 const count = () => {
   const now = new Date().getTime();
@@ -50,7 +52,9 @@ setInterval(count, 1000);
   <Modal
     v-if="isModalShow"
     @cancel="isModalShow = false"
+    @submit="addPeserta"
     title="Daftar Makrab"
+    button-color="bg-blue-500"
     cancel-text="Batal"
     submit-text="Simpan"
   >
