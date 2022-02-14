@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import Navbar from "../../components/Navbar/index.vue";
 import Modal from "../../components/Modal/index.vue";
+import Swal from "sweetalert2";
+import { supabase } from "../../supabase";
 
 const countDown = new Date("March 12, 2022 10:00:00").getTime();
 const hari = ref();
@@ -10,34 +12,77 @@ const menit = ref();
 const detik = ref();
 
 const isModalShow = ref(false);
-
 const showModal = () => {
   isModalShow.value = true;
 };
+const clearForm = () => {
+  fullName.value = "";
+  phoneNumber.value = "";
+  studentId.value = "";
+  classYear.value = 2021;
+  gradeNumber.value = "";
+  email.value = "";
+  tshirtSize.value = "";
+};
 
-const fullName = ref();
-const phoneNumber = ref();
-const studentId = ref();
+const closeModal = () => {
+  clearForm();
+  isModalShow.value = false;
+};
+
+const isValid = computed(
+  () =>
+    (fullName.value.length > 0 &&
+      phoneNumber.value.length > 0 &&
+      studentId.value.length > 0 &&
+      gradeNumber.value.length > 0 &&
+      email.value.length > 0) ||
+    tshirtSize.value.length > 0
+);
+
+const fullName = ref("");
+const phoneNumber = ref("");
+const studentId = ref("");
 const classYear = ref(2021);
-const gradeNumber = ref();
-const email = ref();
+const gradeNumber = ref("");
+const email = ref("");
+const tshirtSize = ref("");
 
-const addPeserta = () => {
-  console.log("submited");
+const addPeserta = async () => {
+  try {
+    const { error } = await supabase.from("pendaftar").insert([
+      {
+        fullName: fullName.value,
+        phoneNumber: phoneNumber.value,
+        studentId: studentId.value,
+        classYear: classYear.value,
+        gradeNumber: gradeNumber.value,
+        email: email.value,
+        tshirtSize: tshirtSize.value,
+      },
+    ]);
+    if (error) throw error;
+    Swal.fire(
+      "Selamat!",
+      "Selamat Anda Telah terdaftar di Makrab 2022",
+      "success"
+    );
+    closeModal();
+  } catch (error: any) {
+    console.log(error);
+    Swal.fire("Error :(", `${error.message}`, "error");
+  }
 };
 
 const count = () => {
   const now = new Date().getTime();
-
   const distance = countDown - now;
-
   const days = Math.floor(distance / (1000 * 60 * 60 * 24));
   const hours = Math.floor(
     (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
   );
   const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
   const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
   hari.value = days + " Hari ";
   jam.value = hours + " Jam ";
   menit.value = minutes + " Menit ";
@@ -51,8 +96,9 @@ setInterval(count, 1000);
   <Navbar />
   <Modal
     v-if="isModalShow"
-    @cancel="isModalShow = false"
+    @cancel="closeModal"
     @submit="addPeserta"
+    :is-valid="isValid"
     title="Daftar Makrab"
     button-color="bg-blue-500"
     cancel-text="Batal"
@@ -100,6 +146,7 @@ setInterval(count, 1000);
             Nomor Telepon (Whatsapp)
           </label>
           <input
+            v-model="phoneNumber"
             class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
             id="phoneNumber"
             type="number"
@@ -119,6 +166,7 @@ setInterval(count, 1000);
             Nomor Induk Mahasiswa
           </label>
           <input
+            v-model="studentId"
             class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
             id="studentId"
             type="number"
@@ -169,6 +217,7 @@ setInterval(count, 1000);
           <div class="relative">
             <select
               v-if="classYear == 2020"
+              v-model="gradeNumber"
               class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
               id="gradeNumber"
             >
@@ -177,6 +226,7 @@ setInterval(count, 1000);
             </select>
             <select
               v-else
+              v-model="gradeNumber"
               class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
               id="gradeNumber"
             >
@@ -211,6 +261,7 @@ setInterval(count, 1000);
           </label>
           <div class="relative">
             <select
+              v-model="tshirtSize"
               class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
               id="classYear"
             >
@@ -235,19 +286,19 @@ setInterval(count, 1000);
             </div>
           </div>
         </div>
-        <div class="w-full mt-2 px-3 mb-6 md:mb-0">
+        <!-- <div class="w-full mt-2 px-3 mb-6 md:mb-0">
           <label
             class="flex justify-start text-gray-700 text-xs font-bold mb-2"
             for="parrentPermission"
           >
-            Surat Izin
+            Download Surat Izin
           </label>
           <input
             class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
             id="parrentPermission"
             type="file"
           />
-        </div>
+        </div> -->
       </div>
     </form>
   </Modal>
@@ -293,13 +344,15 @@ setInterval(count, 1000);
             Daftar Makrab
           </h1>
         </button>
-        <button
-          class="flex items-center justify-center bg-white w-auto h-auto p-4 rounded-lg"
-        >
-          <h1 class="md:text-3xl text-md text-green-500 font-bold">
-            Lihat Peserta
-          </h1>
-        </button>
+        <router-link to="/terdaftar">
+          <button
+            class="flex items-center justify-center bg-white w-auto h-auto p-4 rounded-lg"
+          >
+            <h1 class="md:text-3xl text-md text-green-500 font-bold">
+              Lihat Peserta
+            </h1>
+          </button>
+        </router-link>
       </div>
     </div>
   </div>
