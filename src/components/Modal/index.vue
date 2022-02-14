@@ -15,6 +15,7 @@ interface props {
   submitText?: string;
   contentText?: string;
   buttonColor?: string;
+  isValid?: boolean;
 }
 
 const props = withDefaults(defineProps<props>(), {
@@ -22,6 +23,7 @@ const props = withDefaults(defineProps<props>(), {
   cancelText: "",
   submitText: "",
   contentText: "",
+  isValid: false,
   buttonColor: "bg-green-400",
 });
 </script>
@@ -67,7 +69,8 @@ const props = withDefaults(defineProps<props>(), {
             @click="submitModal"
             type="submit"
             :class="buttonColor"
-            class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-300 sm:ml-3 sm:w-auto sm:text-sm"
+            :disabled="!isValid"
+            class="w-full disabled:bg-gray-300 disabled:text-white inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-300 sm:ml-3 sm:w-auto sm:text-sm"
           >
             {{ submitText }}
           </button>
