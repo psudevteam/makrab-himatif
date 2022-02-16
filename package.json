@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@hennge/vue3-pagination": "^1.0.17",
     "@supabase/supabase-js": "^1.30.0",
     "sweetalert2": "^11.4.0",
     "vue": "^3.2.25",

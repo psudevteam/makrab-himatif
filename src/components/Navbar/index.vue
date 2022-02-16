@@ -8,9 +8,10 @@ const isDropdown = ref(false);
     class="flex sticky z-50 top-0 bg-white h-auto px-8 py-4 w-full justify-center"
   >
     <div class="flex items-center w-full justify-between">
-      <div class="flex">
+      <div class="flex justify-center items-center">
+        <img width="60" src="../../assets/logo.svg" alt="" />
         <h1 class="text-[18px]">
-          Logo |<span class="text-green-400 font-bold">
+          |<span class="text-green-400 ml-2 font-bold">
             Makrab Himatif 2022</span
           >
         </h1>
@@ -28,7 +29,7 @@ const isDropdown = ref(false);
           </li>
         </router-link>
 
-        <router-link to="/peserta">
+        <router-link to="/terdaftar">
           <li class="text-green-500 text-[16px] font-bold hover:font-medium">
             Peserta
           </li>
@@ -48,7 +49,7 @@ const isDropdown = ref(false);
             Panitia
           </li>
         </router-link>
-        <router-link to="/peserta">
+        <router-link to="/terdaftar">
           <li class="text-white text-[16px] font-bold hover:font-medium">
             Peserta
           </li>
