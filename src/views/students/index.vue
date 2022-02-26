@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, watch } from "vue";
 
 import Navbar from "../../components/Navbar/index.vue";
 import { supabase } from "../../supabase";
 
 const studentData: any = ref([]);
 const filtered: any = ref([]);
-const filter: any = ref(0);
+const filter: any = ref(100);
 
 const filterBy = async () => {
   const res = await supabase.from("pendaftar").select();
@@ -58,12 +58,28 @@ const filterBy = async () => {
   }
 };
 
+const searchStudents = ref("");
+
+const findStudents = async () => {
+  const res = await supabase.from("pendaftar").select();
+  filtered.value = res.body;
+  studentData.value = filtered.value.filter((x: any) =>
+    x.fullName.toLowerCase().includes(searchStudents.value) || x.studentId.includes(searchStudents.value)
+  );
+};
+
+watch(searchStudents, (val) => {
+  findStudents()
+})
+
+watch(filter, (val) => {
+  filterBy()
+  searchStudents.value = ''
+})
+
 onMounted(async () => {
   const res = await supabase.from("pendaftar").select();
   studentData.value = res.body;
-  if (filter.value == 1) {
-    console.log("selected");
-  }
 });
 </script>
 <template>
@@ -72,7 +88,9 @@ onMounted(async () => {
     <div class="p-4 w-full">
       <div class="bg-white p-8 rounded-md w-full">
         <div class="flex items-center justify-between pb-6">
-          <div class="flex flex-col space-y-6 md:flex-row w-full justify-between px-4">
+          <div
+            class="flex flex-col space-y-6 md:flex-row w-full justify-between px-4"
+          >
             <div class="flex flex-col">
               <h2 class="text-gray-600 font-semibold">Data Mahasiswa</h2>
               <span class="text-xs"
@@ -81,7 +99,15 @@ onMounted(async () => {
               >
             </div>
             <div class="flex justify-center space-x-4 items-center">
-              <div class="flex flex-col">
+              <div class="flex flex-col gap-2">
+                <input
+                  class="w-auto space-y-1 h-auto p-2 bg-transparent border-2 border-gray-200 rounded-lg"
+                  type="search"
+                  name="search"
+                  id="search"
+                  placeholder="Cari nama, nim"
+                  v-model="searchStudents"
+                />
                 <select
                   v-model="filter"
                   class="w-auto space-y-1 h-auto p-2 bg-gray-200 rounded-lg"
@@ -104,14 +130,6 @@ onMounted(async () => {
                   <option value="12">Kelas A1 2020</option>
                   <option value="13">Kelas A2 2020</option>
                 </select>
-              </div>
-              <div class="flex items-center">
-                <button
-                  class="bg-gray-200 w-[120px] h-[40px] px-1 rounded-lg"
-                  @click="filterBy"
-                >
-                  Filter
-                </button>
               </div>
             </div>
           </div>
