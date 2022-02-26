@@ -1,9 +1,17 @@
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import Navbar from "../../components/Navbar/index.vue";
 import Modal from "../../components/Modal/index.vue";
 import Swal from "sweetalert2";
 import { supabase } from "../../supabase";
+
+onMounted(() => {
+  Swal.fire(
+    "Pemberitahuan",
+    "Pendaftaran akan di tutup pada Tanggal 26 Februari 2022 Jam 23:59",
+    "warning"
+  );
+});
 
 const countDown = new Date("March 12, 2022 10:00:00").getTime();
 const hari = ref();
@@ -12,9 +20,17 @@ const menit = ref();
 const detik = ref();
 
 const isModalShow = ref(false);
+const showModalExpired = () => {
+  Swal.fire(
+    "Waduh!",
+    "Mohon maaf pendaftaran Makrab sudah di tutup :(",
+    "warning"
+  );
+};
 const showModal = () => {
   isModalShow.value = true;
 };
+
 const clearForm = () => {
   fullName.value = "";
   phoneNumber.value = "";
@@ -40,13 +56,20 @@ const isValid = computed(
     tshirtSize.value.length > 0
 );
 
+const isRegisterExpired = computed(() => {
+  const expDate = new Date("February 25, 2022 23:59:00").getTime();
+  const nowDate = new Date().getTime();
+  const result = expDate < nowDate ? true : false;
+  return result;
+});
+
 const fullName = ref("");
 const phoneNumber = ref("");
 const studentId = ref("");
 const classYear = ref(2021);
-const gradeNumber = ref("");
+const gradeNumber = ref("A1");
 const email = ref("");
-const tshirtSize = ref("");
+const tshirtSize = ref("l");
 
 const addPeserta = async () => {
   try {
@@ -286,26 +309,13 @@ setInterval(count, 1000);
             </div>
           </div>
         </div>
-        <!-- <div class="w-full mt-2 px-3 mb-6 md:mb-0">
-          <label
-            class="flex justify-start text-gray-700 text-xs font-bold mb-2"
-            for="parrentPermission"
-          >
-            Download Surat Izin
-          </label>
-          <input
-            class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-            id="parrentPermission"
-            type="file"
-          />
-        </div> -->
       </div>
     </form>
   </Modal>
   <div
     class="flex h-screen bg-gradient-to-r from-green-400 to-blue-500 items-center justify-center w-full"
   >
-    <div class="flex flex-col space-y-6">
+    <div class="flex flex-col space-y-6 items-center">
       <h1
         class="lg:text-6xl flex items-center justify-center text-3xl md:text-4xl font-bold text-white"
       >
@@ -335,15 +345,33 @@ setInterval(count, 1000);
           <h1 class="text-3xl text-white font-bold">{{ detik }}</h1>
         </div>
       </div>
-      <div class="flex justify-center space-x-6">
+      <div class="flex justify-center items-center space-x-6">
         <button
           @click="showModal"
+          :class="{ hidden: !isRegisterExpired }"
           class="flex items-center justify-center bg-white w-auto h-auto p-4 rounded-lg"
         >
           <h1 class="md:text-3xl text-md text-green-500 font-bold">
             Daftar Makrab
           </h1>
         </button>
+        <button
+          @click="showModalExpired"
+          :class="{ hidden: isRegisterExpired }"
+          class="items-center justify-center bg-white w-auto h-auto p-4 rounded-lg"
+        >
+          <h1 class="md:text-3xl text-md text-green-500 font-bold">
+            Daftar Makrab
+          </h1>
+        </button>
+        <a
+          href="/parrentPermission.docx"
+          class="items-center justify-center bg-white w-auto h-auto p-4 rounded-lg"
+        >
+          <h1 class="md:text-3xl text-md text-green-500 font-bold">
+            Unduh Surat Izin Orang Tua
+          </h1>
+        </a>
         <router-link to="/terdaftar">
           <button
             class="flex items-center justify-center bg-white w-auto h-auto p-4 rounded-lg"
