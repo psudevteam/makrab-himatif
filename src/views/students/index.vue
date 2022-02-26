@@ -64,7 +64,7 @@ const findStudents = async () => {
   const res = await supabase.from("pendaftar").select();
   filtered.value = res.body;
   studentData.value = filtered.value.filter((x: any) =>
-    x.fullName.toLowerCase().includes(searchStudents.value) || x.studentId.includes(searchStudents.value)
+    x.fullName.toLowerCase().includes(searchStudents.value.toLowerCase()) || x.studentId.includes(searchStudents.value)
   );
 };
 
