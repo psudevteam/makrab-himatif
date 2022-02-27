@@ -48,11 +48,11 @@ const closeModal = () => {
 
 const isValid = computed(
   () =>
-    (fullName.value.length > 0 &&
-      phoneNumber.value.length > 0 &&
-      studentId.value.length > 0 &&
-      gradeNumber.value.length > 0 &&
-      email.value.length > 0) ||
+    fullName.value.length > 0 &&
+    phoneNumber.value.length > 0 &&
+    studentId.value.length > 0 &&
+    gradeNumber.value.length > 0 &&
+    email.value.length > 0 &&
     tshirtSize.value.length > 0
 );
 
@@ -67,9 +67,9 @@ const fullName = ref("");
 const phoneNumber = ref("");
 const studentId = ref("");
 const classYear = ref(2021);
-const gradeNumber = ref("A1");
+const gradeNumber = ref("");
 const email = ref("");
-const tshirtSize = ref("l");
+const tshirtSize = ref("");
 
 const addPeserta = async () => {
   try {
@@ -211,7 +211,7 @@ setInterval(count, 1000);
               class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
               id="classYear"
             >
-              <option value="2020">2020</option>
+              <option selected value="2020">2020</option>
               <option value="2021">2021</option>
             </select>
             <div
@@ -244,6 +244,7 @@ setInterval(count, 1000);
               class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
               id="gradeNumber"
             >
+              <option selected disabled>Silahkan Pilih</option>
               <option>A1</option>
               <option>A2</option>
             </select>
@@ -253,6 +254,7 @@ setInterval(count, 1000);
               class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
               id="gradeNumber"
             >
+              <option disbaled selected>Silahkan Pilih</option>
               <option>A1</option>
               <option>A2</option>
               <option>A3</option>
@@ -288,6 +290,7 @@ setInterval(count, 1000);
               class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
               id="classYear"
             >
+              <option disbaled selected>Silahkan Pilih</option>
               <option value="s">S</option>
               <option value="m">M</option>
               <option value="l">L</option>
@@ -348,8 +351,8 @@ setInterval(count, 1000);
       <div class="flex justify-center items-center space-x-6">
         <button
           @click="showModal"
-          :class="{ hidden: !isRegisterExpired }"
-          class="flex items-center justify-center bg-white w-auto h-auto p-4 rounded-lg"
+          disabled
+          class="hidden items-center justify-center bg-white w-auto h-auto p-4 rounded-lg"
         >
           <h1 class="md:text-3xl text-md text-green-500 font-bold">
             Daftar Makrab
@@ -357,8 +360,7 @@ setInterval(count, 1000);
         </button>
         <button
           @click="showModalExpired"
-          :class="{ hidden: isRegisterExpired }"
-          class="items-center justify-center bg-white w-auto h-auto p-4 rounded-lg"
+          class="flex items-center justify-center bg-white w-auto h-auto p-4 rounded-lg"
         >
           <h1 class="md:text-3xl text-md text-green-500 font-bold">
             Daftar Makrab
