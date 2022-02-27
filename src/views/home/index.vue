@@ -8,7 +8,7 @@ import { supabase } from "../../supabase";
 onMounted(() => {
   Swal.fire(
     "Pemberitahuan",
-    "Pendaftaran akan di tutup pada Tanggal 26 Februari 2022 Jam 23:59",
+    "Pendaftaran telah ditutup pada tanggal 26 Februari 2022 Jam 23:59",
     "warning"
   );
 });
@@ -22,11 +22,12 @@ const detik = ref();
 const isModalShow = ref(false);
 const showModalExpired = () => {
   Swal.fire(
-    "Waduh!",
-    "Mohon maaf pendaftaran Makrab sudah di tutup :(",
+    "Pemberitahuan",
+    "Mohon maaf pendaftaran Makrab sudah ditutup",
     "warning"
   );
 };
+
 const showModal = () => {
   isModalShow.value = true;
 };
@@ -55,13 +56,6 @@ const isValid = computed(
     email.value.length > 0 &&
     tshirtSize.value.length > 0
 );
-
-const isRegisterExpired = computed(() => {
-  const expDate = new Date("February 25, 2022 23:59:00").getTime();
-  const nowDate = new Date().getTime();
-  const result = expDate < nowDate ? true : false;
-  return result;
-});
 
 const fullName = ref("");
 const phoneNumber = ref("");
