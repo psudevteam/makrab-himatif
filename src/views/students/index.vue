@@ -63,19 +63,21 @@ const searchStudents = ref("");
 const findStudents = async () => {
   const res = await supabase.from("pendaftar").select();
   filtered.value = res.body;
-  studentData.value = filtered.value.filter((x: any) =>
-    x.fullName.toLowerCase().includes(searchStudents.value.toLowerCase()) || x.studentId.includes(searchStudents.value)
+  studentData.value = filtered.value.filter(
+    (x: any) =>
+      x.fullName.toLowerCase().includes(searchStudents.value.toLowerCase()) ||
+      x.studentId.includes(searchStudents.value)
   );
 };
 
 watch(searchStudents, (val) => {
-  findStudents()
-})
+  findStudents();
+});
 
 watch(filter, (val) => {
-  filterBy()
-  searchStudents.value = ''
-})
+  filterBy();
+  searchStudents.value = "";
+});
 
 onMounted(async () => {
   const res = await supabase.from("pendaftar").select();

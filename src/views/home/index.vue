@@ -13,11 +13,12 @@ onMounted(() => {
   );
 });
 
-const countDown = new Date("March 12, 2022 10:00:00").getTime();
+const countDown = new Date("March 12, 2022 11:10:00").getTime();
 const hari = ref();
 const jam = ref();
 const menit = ref();
 const detik = ref();
+const isTimeExpired = ref(false);
 
 const isModalShow = ref(false);
 const showModalExpired = () => {
@@ -104,6 +105,10 @@ const count = () => {
   jam.value = hours + " Jam ";
   menit.value = minutes + " Menit ";
   detik.value = seconds + " Detik ";
+
+  if (distance < 0) {
+    isTimeExpired.value = true;
+  }
 };
 
 setInterval(count, 1000);
@@ -312,7 +317,11 @@ setInterval(count, 1000);
   <div
     class="flex h-screen bg-gradient-to-r from-green-400 to-blue-500 items-center justify-center w-full"
   >
-    <div class="flex flex-col space-y-6 items-center">
+    <div v-if="isTimeExpired" class="flex flex-col items-center">
+      <h1 class="text-7xl text-white font-bold">Selamat Melaksanakan Makrab</h1>
+      <h1 class="text-5xl text-white">Untuk Panitia dan Peserta</h1>
+    </div>
+    <div v-else class="flex flex-col space-y-6 items-center">
       <h1
         class="lg:text-6xl flex items-center justify-center text-3xl md:text-4xl font-bold text-white"
       >
