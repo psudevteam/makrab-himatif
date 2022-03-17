@@ -317,76 +317,11 @@ setInterval(count, 1000);
   <div
     class="flex h-screen bg-gradient-to-r from-green-400 to-blue-500 items-center justify-center w-full"
   >
-    <div v-if="isTimeExpired" class="flex flex-col items-center">
-      <h1 class="text-7xl text-white font-bold">Selamat Melaksanakan Makrab</h1>
-      <h1 class="text-5xl text-white">Untuk Panitia dan Peserta</h1>
-    </div>
-    <div v-else class="flex flex-col space-y-6 items-center">
-      <h1
-        class="lg:text-6xl flex items-center justify-center text-3xl md:text-4xl font-bold text-white"
-      >
-        Waktu Menuju Makrab
+    <div class="flex flex-col items-center">
+      <h1 class="text-7xl text-white font-bold">
+        Makrab nya sudah selesai Gaes
       </h1>
-      <div
-        class="flex flex-col px-24 md:p-0 space-y-4 md:space-y-0 md:space-x-4 md:flex-row"
-      >
-        <div
-          class="flex items-center justify-center p-4 border-2 border-white w-auto h-auto rounded-lg"
-        >
-          <h1 class="text-3xl text-white font-bold">{{ hari }}</h1>
-        </div>
-        <div
-          class="flex items-center justify-center p-4 border-2 border-white w-auto h-auto rounded-lg"
-        >
-          <h1 class="text-3xl text-white font-bold">{{ jam }}</h1>
-        </div>
-        <div
-          class="flex items-center justify-center p-4 border-2 border-white w-auto h-auto rounded-lg"
-        >
-          <h1 class="text-3xl text-white font-bold">{{ menit }}</h1>
-        </div>
-        <div
-          class="flex items-center justify-center p-4 border-2 border-white w-auto h-auto rounded-lg"
-        >
-          <h1 class="text-3xl text-white font-bold">{{ detik }}</h1>
-        </div>
-      </div>
-      <div class="flex justify-center items-center space-x-6">
-        <button
-          @click="showModal"
-          disabled
-          class="hidden items-center justify-center bg-white w-auto h-auto p-4 rounded-lg"
-        >
-          <h1 class="md:text-3xl text-md text-green-500 font-bold">
-            Daftar Makrab
-          </h1>
-        </button>
-        <button
-          @click="showModalExpired"
-          class="flex items-center justify-center bg-white w-auto h-auto p-4 rounded-lg"
-        >
-          <h1 class="md:text-3xl text-md text-green-500 font-bold">
-            Daftar Makrab
-          </h1>
-        </button>
-        <a
-          href="/parrentPermission.docx"
-          class="items-center justify-center bg-white w-auto h-auto p-4 rounded-lg"
-        >
-          <h1 class="md:text-3xl text-md text-green-500 font-bold">
-            Unduh Surat Izin Orang Tua
-          </h1>
-        </a>
-        <router-link to="/terdaftar">
-          <button
-            class="flex items-center justify-center bg-white w-auto h-auto p-4 rounded-lg"
-          >
-            <h1 class="md:text-3xl text-md text-green-500 font-bold">
-              Lihat Peserta
-            </h1>
-          </button>
-        </router-link>
-      </div>
+      <h1 class="text-5xl text-white">Sekarang Bayar</h1>
     </div>
   </div>
 </template>
